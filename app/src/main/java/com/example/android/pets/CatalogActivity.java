@@ -74,9 +74,24 @@ public class CatalogActivity extends AppCompatActivity {
         // Create and/or open a database to read from it
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        // Perform this raw SQL query "SELECT * FROM pets"
-        // to get a Cursor that contains all rows from the pets table.
-        Cursor cursor = db.rawQuery("SELECT * FROM " + PetEntry.TABLE_NAME, null);
+        String[] projection = {
+                PetEntry._ID,
+                PetEntry.COLUMN_PET_NAME,
+                PetEntry.COLUMN_PET_BREED,
+                PetEntry.COLUMN_PET_GENDER,
+                PetEntry.COLUMN_PET_WEIGHT
+        };
+
+        Cursor cursor = db.query(
+                PetEntry.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
         try {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
             // pets table in the database).
@@ -101,7 +116,7 @@ public class CatalogActivity extends AppCompatActivity {
     /**
      * Helper method to insert hardcoded pet data into the database. For debugging purposes only.
      */
-    private void insertPet(){
+    private void insertPet() {
         // TODO: Insert a single pet into the database
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -112,7 +127,7 @@ public class CatalogActivity extends AppCompatActivity {
 
         long newRowId = db.insert(PetEntry.TABLE_NAME, null, values);
 
-        Log.v("CatalogActivity","New Data Row" + newRowId);
+        Log.v("CatalogActivity", "New Data Row" + newRowId);
     }
 
     @Override
